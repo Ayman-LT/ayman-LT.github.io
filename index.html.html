@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔭</text></svg>">
+  <title>Ayman LATOUATE : Technicien Informatique</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0D1117;
+      --surface:   #161B22;
+      --border:    #21262D;
+      --accent:    #58A6FF;
+      --green:     #3FB950;
+      --muted:     #8B949E;
+      --text:      #E6EDF3;
+      --mono:      'IBM Plex Mono', monospace;
+      --sans:      'Inter', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 15px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2rem;
+      height: 56px;
+      background: rgba(13,17,23,.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: var(--mono);
+      font-size: .9rem;
+      color: var(--accent);
+      letter-spacing: .04em;
+    }
+    .nav-links { display: flex; gap: 1.8rem; }
+    .nav-links a {
+      font-size: .82rem;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    /* HERO */
+    .hero {
+      padding: 140px 2rem 80px;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+    .hero-tag {
+      font-family: var(--mono);
+      font-size: .78rem;
+      color: var(--green);
+      margin-bottom: 1.2rem;
+    }
+    .hero h1 {
+      font-size: clamp(2.2rem, 5vw, 3.6rem);
+      font-weight: 600;
+      line-height: 1.15;
+      letter-spacing: -.02em;
+      margin-bottom: 1.2rem;
+    }
+    .hero h1 span { color: var(--accent); }
+    .hero p {
+      font-size: 1.05rem;
+      color: var(--muted);
+      max-width: 560px;
+      margin-bottom: 2rem;
+    }
+    .hero-cta {
+      display: inline-flex; gap: 1rem; flex-wrap: wrap;
+    }
+    .btn {
+      padding: .55rem 1.3rem;
+      border-radius: 6px;
+      font-size: .85rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: opacity .2s;
+    }
+    .btn:hover { opacity: .8; }
+    .btn-primary { background: var(--accent); color: #0D1117; }
+    .btn-outline { border: 1px solid var(--border); color: var(--text); }
+
+    /* STATS BAR */
+    .stats {
+      max-width: 860px; margin: 0 auto;
+      padding: 0 2rem 60px;
+      display: flex; gap: 2.5rem; flex-wrap: wrap;
+    }
+    .stat-item { display: flex; flex-direction: column; }
+    .stat-num {
+      font-family: var(--mono);
+      font-size: 1.7rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .stat-label {
+      font-size: .78rem;
+      color: var(--muted);
+    }
+
+    /* SECTIONS */
+    section {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 60px 2rem;
+      border-top: 1px solid var(--border);
+    }
+    .section-head {
+      font-family: var(--mono);
+      font-size: .75rem;
+      color: var(--muted);
+      letter-spacing: .08em;
+      margin-bottom: 2rem;
+    }
+
+    /* PROJECTS */
+    .projects { display: flex; flex-direction: column; gap: 1px; }
+    .project-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.5rem;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 1.2rem;
+      align-items: start;
+      margin-bottom: .75rem;
+      transition: border-color .2s;
+    }
+    .project-card:hover { border-color: var(--accent); }
+    .project-index {
+      font-family: var(--mono);
+      font-size: .8rem;
+      color: var(--muted);
+      padding-top: .15rem;
+      min-width: 24px;
+    }
+    .project-body h3 {
+      font-size: 1rem;
+      font-weight: 500;
+      margin-bottom: .4rem;
+    }
+    .project-body p {
+      font-size: .85rem;
+      color: var(--muted);
+      max-width: 560px;
+    }
+    .project-meta {
+      display: flex; flex-direction: column; align-items: flex-end; gap: .4rem;
+    }
+    .badge {
+      font-family: var(--mono);
+      font-size: .7rem;
+      padding: .2rem .55rem;
+      border-radius: 20px;
+    }
+    .badge-done { background: rgba(63,185,80,.12); color: var(--green); border: 1px solid rgba(63,185,80,.3); }
+    .badge-wip  { background: rgba(88,166,255,.1);  color: var(--accent);  border: 1px solid rgba(88,166,255,.3); }
+    .project-hours {
+      font-family: var(--mono);
+      font-size: .72rem;
+      color: var(--muted);
+    }
+
+    /* PROGRESS BAR */
+    .progress-wrap { margin-top: .6rem; }
+    .progress-label {
+      font-family: var(--mono);
+      font-size: .7rem;
+      color: var(--muted);
+      margin-bottom: .3rem;
+    }
+    .progress-bar {
+      height: 3px;
+      background: var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+      width: 140px;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+
+    /* SKILLS */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: .75rem;
+    }
+    .skill-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: .9rem 1.1rem;
+    }
+    .skill-name {
+      font-size: .88rem;
+      font-weight: 500;
+      margin-bottom: .3rem;
+    }
+    .skill-cat {
+      font-family: var(--mono);
+      font-size: .7rem;
+      color: var(--muted);
+    }
+
+    /* FORMATION */
+    .formation-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.5rem;
+    }
+    .formation-card h3 { font-size: 1rem; font-weight: 500; margin-bottom: .4rem; }
+    .formation-card p { font-size: .85rem; color: var(--muted); }
+    .formation-progress {
+      margin-top: 1rem;
+      display: flex; align-items: center; gap: 1rem;
+    }
+    .formation-bar {
+      flex: 1; height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .formation-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--green), var(--accent));
+    }
+    .formation-pct {
+      font-family: var(--mono);
+      font-size: .75rem;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    /* CONTACT */
+    .contact-row {
+      display: flex; gap: 1rem; flex-wrap: wrap;
+    }
+    .contact-link {
+      display: flex; align-items: center; gap: .5rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: .7rem 1.1rem;
+      text-decoration: none;
+      color: var(--text);
+      font-size: .85rem;
+      transition: border-color .2s;
+    }
+    .contact-link:hover { border-color: var(--accent); }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 1.5rem 2rem;
+      text-align: center;
+      font-family: var(--mono);
+      font-size: .72rem;
+      color: var(--muted);
+    }
+
+    @media (max-width: 600px) {
+      .project-card { grid-template-columns: auto 1fr; }
+      .project-meta { flex-direction: row; align-items: center; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-logo">ayman.latouate</span>
+  <div class="nav-links">
+    <a href="#projets">Projets</a>
+    <a href="#competences">Compétences</a>
+    <a href="#plateformes">Plateformes</a>
+    <a href="#formation">Formation</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <p class="hero-tag">// disponible pour une alternance ou un stage</p>
+  <h1>Ayman<br/><span>LATOUATE</span></h1>
+  <p>Technicien informatique passionné par les réseaux, le support et les infrastructures IT. Basé en Île-de-France.</p>
+  <div class="hero-cta">
+    <a href="#projets" class="btn btn-primary">Voir mes projets</a>
+    <a href="#contact" class="btn btn-outline">Me contacter</a>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat-item">
+    <span class="stat-num">3</span>
+    <span class="stat-label">projets validés</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num">115h</span>
+    <span class="stat-label">de travaux pratiques</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num">75%</span>
+    <span class="stat-label">de la formation complétée</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num">14</span>
+    <span class="stat-label">rooms TryHackMe</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num">3+</span>
+    <span class="stat-label">certifications obtenues</span>
+  </div>
+</div>
+
+<section id="projets">
+  <p class="section-head">projets réalisés</p>
+  <div class="projects">
+
+    <div class="project-card">
+      <span class="project-index">01</span>
+      <div class="project-body">
+        <h3>Démarrez votre formation de Technicien Informatique</h3>
+        <p>Prise en main de l'environnement de formation, découverte des outils et méthodologies du technicien informatique. Mise en place du cadre de travail professionnel.</p>
+      </div>
+      <div class="project-meta">
+        <span class="badge badge-done">validé</span>
+        <span class="project-hours">10 h</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <span class="project-index">02</span>
+      <div class="project-body">
+        <h3>Assemblez et intégrez le poste de votre client dans son réseau local</h3>
+        <p>Montage d'un poste de travail complet, installation du système d'exploitation, configuration réseau LAN et intégration dans l'infrastructure existante d'un client.</p>
+      </div>
+      <div class="project-meta">
+        <span class="badge badge-done">validé</span>
+        <span class="project-hours">45 h</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <span class="project-index">03</span>
+      <div class="project-body">
+        <h3>Installez et configurez le réseau d'une PME</h3>
+        <p>Conception et déploiement d'une infrastructure réseau pour une petite et moyenne entreprise : routage, switching, DHCP, DNS, et sécurité périmétrique.</p>
+      </div>
+      <div class="project-meta">
+        <span class="badge badge-done">validé</span>
+        <span class="project-hours">60 h</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <span class="project-index">04</span>
+      <div class="project-body">
+        <h3>Fournissez un support aux utilisateurs</h3>
+        <p>Gestion des tickets, diagnostic et résolution d'incidents, accompagnement des utilisateurs finaux. Mise en pratique des procédures ITIL de support niveau 1 et 2.</p>
+        <div class="progress-wrap">
+          <p class="progress-label">65% complété</p>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width:65%"></div>
+          </div>
+        </div>
+      </div>
+      <div class="project-meta">
+        <span class="badge badge-wip">en cours</span>
+        <span class="project-hours">60 h</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section id="competences">
+  <p class="section-head">compétences techniques</p>
+  <div class="skills-grid">
+    <div class="skill-item">
+      <p class="skill-name">Réseaux TCP/IP</p>
+      <p class="skill-cat">Infrastructure</p>
+    </div>
+    <div class="skill-item">
+      <p class="skill-name">Windows Server</p>
+      <p class="skill-cat">Systèmes</p>
+    </div>
+    <div class="skill-item">
+      <p class="skill-name">Active Directory</p>
+      <p class="skill-cat">Administration</p>
+    </div>
+    <div class="skill-item">
+      <p class="skill-name">DHCP / DNS</p>
+      <p class="skill-cat">Réseau</p>
+    </div>
+    <div class="skill-item">
+      <p class="skill-name">Support utilisateur</p>
+      <p class="skill-cat">Helpdesk</p>
+    </div>
+    <div class="skill-item">
+      <p class="skill-name">Docker</p>
+      <p class="skill-cat">Virtualisation</p>
+    </div>
+    <div class="skill-item">
+      <p class="skill-name">Linux / PowerShell</p>
+      <p class="skill-cat">Scripting</p>
+    </div>
+    <div class="skill-item">
+      <p class="skill-name">Cybersécurité OSINT</p>
+      <p class="skill-cat">Sécurité</p>
+    </div>
+    <div class="skill-item">
+      <p class="skill-name">CTF / Pentesting</p>
+      <p class="skill-cat">Offensif</p>
+    </div>
+    <div class="skill-item">
+      <p class="skill-name">SEO & Référencement</p>
+      <p class="skill-cat">Web Marketing</p>
+    </div>
+    <div class="skill-item">
+      <p class="skill-name">Reconnaissance réseau</p>
+      <p class="skill-cat">Sécurité</p>
+    </div>
+    <div class="skill-item">
+      <p class="skill-name">ISO 27001 / SMSI</p>
+      <p class="skill-cat">Conformité</p>
+    </div>
+    <div class="skill-item">
+      <p class="skill-name">Audit interne</p>
+      <p class="skill-cat">Conformité</p>
+    </div>
+    <div class="skill-item">
+      <p class="skill-name">Création de site web</p>
+      <p class="skill-cat">Web</p>
+    </div>
+    <div class="skill-item">
+      <p class="skill-name">Cisco Packet Tracer</p>
+      <p class="skill-cat">Simulation réseau</p>
+    </div>
+    <div class="skill-item">
+      <p class="skill-name">AWS Cloud</p>
+      <p class="skill-cat">Cloud</p>
+    </div>
+    <div class="skill-item">
+      <p class="skill-name">Investigation OSINT</p>
+      <p class="skill-cat">Renseignement</p>
+    </div>
+    <div class="skill-item">
+      <p class="skill-name">Cartographie de relations</p>
+      <p class="skill-cat">Analyse</p>
+    </div>
+  </div>
+</section>
+
+<section id="plateformes">
+  <p class="section-head">plateformes & certifications</p>
+  <div class="projects">
+
+    <div class="project-card">
+      <span class="project-index">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#58A6FF" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+      </span>
+      <div class="project-body">
+        <h3>TryHackMe : Rang [0x4] SEEKER</h3>
+        <p>Entraînement pratique en cybersécurité via 14 rooms complétées. Compétences couvertes : Google Dorking, Nmap, Pentesting Fundamentals, Offensive & Defensive Security, SOC/SIEM/DFIR, HTTP, Networking, Linux, Windows, Virtualisation.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.7rem;">
+          <span style="font-family:var(--mono);font-size:.68rem;padding:.15rem .5rem;border-radius:12px;background:rgba(255,100,100,.1);color:#ff6b6b;border:1px solid rgba(255,100,100,.25);">Google Dorking</span>
+          <span style="font-family:var(--mono);font-size:.68rem;padding:.15rem .5rem;border-radius:12px;background:rgba(255,100,100,.1);color:#ff6b6b;border:1px solid rgba(255,100,100,.25);">Nmap</span>
+          <span style="font-family:var(--mono);font-size:.68rem;padding:.15rem .5rem;border-radius:12px;background:rgba(255,100,100,.1);color:#ff6b6b;border:1px solid rgba(255,100,100,.25);">Pentesting</span>
+          <span style="font-family:var(--mono);font-size:.68rem;padding:.15rem .5rem;border-radius:12px;background:rgba(255,100,100,.1);color:#ff6b6b;border:1px solid rgba(255,100,100,.25);">Offensive Security</span>
+          <span style="font-family:var(--mono);font-size:.68rem;padding:.15rem .5rem;border-radius:12px;background:rgba(88,166,255,.1);color:#58A6FF;border:1px solid rgba(88,166,255,.25);">Defensive Security</span>
+          <span style="font-family:var(--mono);font-size:.68rem;padding:.15rem .5rem;border-radius:12px;background:rgba(88,166,255,.1);color:#58A6FF;border:1px solid rgba(88,166,255,.25);">SOC / SIEM</span>
+          <span style="font-family:var(--mono);font-size:.68rem;padding:.15rem .5rem;border-radius:12px;background:rgba(88,166,255,.1);color:#58A6FF;border:1px solid rgba(88,166,255,.25);">DFIR</span>
+          <span style="font-family:var(--mono);font-size:.68rem;padding:.15rem .5rem;border-radius:12px;background:rgba(63,185,80,.1);color:#3FB950;border:1px solid rgba(63,185,80,.25);">Networking</span>
+          <span style="font-family:var(--mono);font-size:.68rem;padding:.15rem .5rem;border-radius:12px;background:rgba(63,185,80,.1);color:#3FB950;border:1px solid rgba(63,185,80,.25);">HTTP</span>
+          <span style="font-family:var(--mono);font-size:.68rem;padding:.15rem .5rem;border-radius:12px;background:rgba(63,185,80,.1);color:#3FB950;border:1px solid rgba(63,185,80,.25);">Linux</span>
+          <span style="font-family:var(--mono);font-size:.68rem;padding:.15rem .5rem;border-radius:12px;background:rgba(63,185,80,.1);color:#3FB950;border:1px solid rgba(63,185,80,.25);">Windows</span>
+          <span style="font-family:var(--mono);font-size:.68rem;padding:.15rem .5rem;border-radius:12px;background:rgba(63,185,80,.1);color:#3FB950;border:1px solid rgba(63,185,80,.25);">Virtualisation</span>
+        </div>
+      </div>
+      <div class="project-meta">
+        <span class="badge badge-done">actif</span>
+        <span class="project-hours">Alphonsard</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <span class="project-index">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3FB950" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+      </span>
+      <div class="project-body">
+        <h3>Semrush Academy : Principes de SEO</h3>
+        <p>Certification officielle couvrant les fondamentaux du référencement naturel : structure d'un site, recherche de mots-clés, optimisation on-page et stratégie de contenu.</p>
+        <div class="progress-wrap" style="margin-top:.6rem">
+          <a href="https://static.semrush.com/academy/certificates/242f53dcd4/latouate-ayman_10.pdf" target="_blank" style="font-family:var(--mono);font-size:.7rem;color:var(--accent);text-decoration:none;">
+            ↗ Voir le certificat · valide jusqu'au 02/2027
+          </a>
+        </div>
+      </div>
+      <div class="project-meta">
+        <span class="badge badge-done">certifié</span>
+        <span class="project-hours">SEO</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <span class="project-index">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3FB950" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+      </span>
+      <div class="project-body">
+        <h3>Semrush Academy : Créer un site Web pour une petite entreprise</h3>
+        <p>Certification pratique sur la création et l'optimisation d'un site web professionnel pour PME : structure, contenu, UX et référencement local. Formateur : Wes McDowell.</p>
+        <div class="progress-wrap" style="margin-top:.6rem">
+          <a href="https://static.semrush.com/academy/certificates/ec56206dcb/latouate-ayman_4.pdf" target="_blank" style="font-family:var(--mono);font-size:.7rem;color:var(--accent);text-decoration:none;">
+            ↗ Voir le certificat · valide jusqu'au 06/2027
+          </a>
+        </div>
+      </div>
+      <div class="project-meta">
+        <span class="badge badge-done">certifié</span>
+        <span class="project-hours">Web</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <span class="project-index">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3FB950" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </span>
+      <div class="project-body">
+        <h3>ISO 27001 Foundations Course : Exemplar Global</h3>
+        <p>Formation complète aux fondamentaux de la norme ISO 27001 : exigences, bonnes pratiques et mise en conformité des systèmes de management de la sécurité de l'information (SMSI).</p>
+      </div>
+      <div class="project-meta">
+        <span class="badge badge-done">100% complété</span>
+        <span class="project-hours">8 h</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <span class="project-index">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#58A6FF" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </span>
+      <div class="project-body">
+        <h3>ISO 27001 Internal Auditor Course : Exemplar Global</h3>
+        <p>Formation à la conduite d'audits internes ISO 27001 au sein d'une organisation. Compétences en planification, réalisation et reporting d'audit de conformité SMSI.</p>
+        <div class="progress-wrap">
+          <p class="progress-label">26.61% complété</p>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width:26.61%"></div>
+          </div>
+        </div>
+      </div>
+      <div class="project-meta">
+        <span class="badge badge-wip">en cours</span>
+        <span class="project-hours">16 h</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <span class="project-index">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1BA0D7" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+      </span>
+      <div class="project-body">
+        <h3>Cisco Networking Academy : Getting Started with Packet Tracer</h3>
+        <p>Formation et certification à Cisco Packet Tracer, le simulateur réseau de référence utilisé par les professionnels pour concevoir, configurer et dépanner des infrastructures réseau sans matériel physique.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.7rem;">
+          <span style="font-family:var(--mono);font-size:.68rem;padding:.15rem .5rem;border-radius:12px;background:rgba(27,160,215,.1);color:#1BA0D7;border:1px solid rgba(27,160,215,.25);">Packet Tracer</span>
+          <span style="font-family:var(--mono);font-size:.68rem;padding:.15rem .5rem;border-radius:12px;background:rgba(27,160,215,.1);color:#1BA0D7;border:1px solid rgba(27,160,215,.25);">Simulation réseau</span>
+          <span style="font-family:var(--mono);font-size:.68rem;padding:.15rem .5rem;border-radius:12px;background:rgba(27,160,215,.1);color:#1BA0D7;border:1px solid rgba(27,160,215,.25);">Cisco</span>
+        </div>
+        <p style="font-family:var(--mono);font-size:.7rem;color:var(--muted);margin-top:.6rem;">Délivré le 27 juin 2024</p>
+      </div>
+      <div class="project-meta">
+        <span class="badge badge-done">certifié</span>
+        <span class="project-hours">Réseau</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <span class="project-index">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FF9900" stroke-width="2"><path d="M3 15a4 4 0 0 0 4 4h9a5 5 0 1 0-.1-9.999 5.002 5.002 0 0 0-9.78 2.096A4.001 4.001 0 0 0 3 15z"/></svg>
+      </span>
+      <div class="project-body">
+        <h3>AWS Skill Builder : Cloud Quest</h3>
+        <p>Apprentissage gamifié des services AWS via des missions pratiques. Badge Cloud Practitioner obtenu, avec exploration de domaines avancés : Machine Learning, Solutions Architect, Data Analytics, Serverless, Generative AI, Networking et Security.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.7rem;">
+          <span style="font-family:var(--mono);font-size:.68rem;padding:.15rem .5rem;border-radius:12px;background:rgba(255,153,0,.1);color:#FF9900;border:1px solid rgba(255,153,0,.25);">Cloud Practitioner ✓</span>
+          <span style="font-family:var(--mono);font-size:.68rem;padding:.15rem .5rem;border-radius:12px;background:rgba(255,153,0,.08);color:#FF9900;border:1px solid rgba(255,153,0,.2);">Machine Learning</span>
+          <span style="font-family:var(--mono);font-size:.68rem;padding:.15rem .5rem;border-radius:12px;background:rgba(255,153,0,.08);color:#FF9900;border:1px solid rgba(255,153,0,.2);">Solutions Architect</span>
+          <span style="font-family:var(--mono);font-size:.68rem;padding:.15rem .5rem;border-radius:12px;background:rgba(255,153,0,.08);color:#FF9900;border:1px solid rgba(255,153,0,.2);">Serverless</span>
+          <span style="font-family:var(--mono);font-size:.68rem;padding:.15rem .5rem;border-radius:12px;background:rgba(255,153,0,.08);color:#FF9900;border:1px solid rgba(255,153,0,.2);">Generative AI</span>
+          <span style="font-family:var(--mono);font-size:.68rem;padding:.15rem .5rem;border-radius:12px;background:rgba(255,153,0,.08);color:#FF9900;border:1px solid rgba(255,153,0,.2);">Security</span>
+        </div>
+        <p style="font-family:var(--mono);font-size:.7rem;color:var(--muted);margin-top:.6rem;">Builder Lv.3 · Reputation Lv.4 · 274 💎</p>
+      </div>
+      <div class="project-meta">
+        <span class="badge badge-done">badge obtenu</span>
+        <span class="project-hours">AWS</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <span class="project-index">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg>
+      </span>
+      <div class="project-body">
+        <h3>Flowsint : Investigation OSINT & graphe de relations</h3>
+        <p>Utilisation d'un outil d'investigation OSINT open source pour cartographier des entités (individus, organisations, usernames, numéros de téléphone, localisations) et leurs relations via un graphe interactif. Intégration d'APIs tierces pour l'enrichissement automatique des données.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.7rem;">
+          <span style="font-family:var(--mono);font-size:.68rem;padding:.15rem .5rem;border-radius:12px;background:rgba(167,139,250,.1);color:#a78bfa;border:1px solid rgba(167,139,250,.25);">Shodan</span>
+          <span style="font-family:var(--mono);font-size:.68rem;padding:.15rem .5rem;border-radius:12px;background:rgba(167,139,250,.1);color:#a78bfa;border:1px solid rgba(167,139,250,.25);">Sherlock</span>
+          <span style="font-family:var(--mono);font-size:.68rem;padding:.15rem .5rem;border-radius:12px;background:rgba(167,139,250,.1);color:#a78bfa;border:1px solid rgba(167,139,250,.25);">Veriphone</span>
+          <span style="font-family:var(--mono);font-size:.68rem;padding:.15rem .5rem;border-radius:12px;background:rgba(167,139,250,.1);color:#a78bfa;border:1px solid rgba(167,139,250,.25);">Whoxy</span>
+          <span style="font-family:var(--mono);font-size:.68rem;padding:.15rem .5rem;border-radius:12px;background:rgba(167,139,250,.1);color:#a78bfa;border:1px solid rgba(167,139,250,.25);">Graphe de relations</span>
+          <span style="font-family:var(--mono);font-size:.68rem;padding:.15rem .5rem;border-radius:12px;background:rgba(167,139,250,.1);color:#a78bfa;border:1px solid rgba(167,139,250,.25);">Enrichissement API</span>
+        </div>
+      </div>
+      <div class="project-meta">
+        <span class="badge badge-done">pratiqué</span>
+        <span class="project-hours">OSINT</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <span class="project-index">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#58A6FF" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </span>
+      <div class="project-body">
+        <h3>ISO 27001 Lead Auditor Course : Exemplar Global</h3>
+        <p>Formation avancée pour piloter et diriger des équipes d'audit ISO 27001. Objectif : certification Lead Auditor TPECS reconnue internationalement.</p>
+        <div class="progress-wrap">
+          <p class="progress-label">1.95% complété</p>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width:1.95%"></div>
+          </div>
+        </div>
+      </div>
+      <div class="project-meta">
+        <span class="badge badge-wip">en cours</span>
+        <span class="project-hours">30 h</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section id="formation">
+  <p class="section-head">formation</p>
+  <div class="formation-card">
+    <h3>Technicien Informatique : OpenClassrooms</h3>
+    <p>Parcours certifiant RNCP niveau 4 · Formation en alternance · Île-de-France</p>
+    <div class="formation-progress">
+      <div class="formation-bar">
+        <div class="formation-fill" style="width:75%"></div>
+      </div>
+      <span class="formation-pct">75% complété</span>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <p class="section-head">contact</p>
+  <div class="contact-row">
+    <a href="mailto:ayman.latouate@gmail.com" class="contact-link">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
+      ayman.latouate@gmail.com
+    </a>
+
+    <a href="https://www.linkedin.com/in/" target="_blank" class="contact-link">
+      <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+      LinkedIn
+    </a>
+    <a href="https://tryhackme.com/p/Alphonsard" target="_blank" class="contact-link">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+      TryHackMe
+    </a>
+  </div>
+</section>
+
+<footer>
+  © 2026 Ayman LATOUATE · Technicien Informatique · Île-de-France
+</footer>
+
+</body>
+</html>
