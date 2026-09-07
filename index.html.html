@@ -281,6 +281,58 @@
       color: var(--muted);
     }
 
+    /* THEME TOGGLE */
+    .theme-btn {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: .4rem .7rem;
+      cursor: pointer;
+      color: var(--text);
+      font-size: 1.1rem;
+      transition: border-color .2s, background .2s;
+      display: flex; align-items: center; gap: .4rem;
+    }
+    .theme-btn:hover { border-color: var(--accent); background: var(--surface); }
+
+    /* LIGHT MODE */
+    body.light {
+      --bg:      #F8F9FB;
+      --surface: #FFFFFF;
+      --border:  #DDE3ED;
+      --accent:  #1A56DB;
+      --green:   #057A55;
+      --muted:   #6B7280;
+      --text:    #111827;
+    }
+    body.light nav {
+      background: rgba(248,249,251,.92);
+    }
+    body.light .btn-primary {
+      background: #1A56DB;
+      color: #fff;
+    }
+    body.light .btn-outline {
+      border-color: #DDE3ED;
+      color: #111827;
+    }
+    body.light .badge-done {
+      background: rgba(5,122,85,.1);
+      color: #057A55;
+      border-color: rgba(5,122,85,.3);
+    }
+    body.light .badge-wip {
+      background: rgba(26,86,219,.1);
+      color: #1A56DB;
+      border-color: rgba(26,86,219,.3);
+    }
+    body.light .formation-fill {
+      background: linear-gradient(90deg, #057A55, #1A56DB);
+    }
+    body.light .hero h1 span { color: #1A56DB; }
+    body.light .nav-logo { color: #1A56DB; }
+    body.light .progress-fill { background: #1A56DB; }
+
     @media (max-width: 600px) {
       .project-card { grid-template-columns: auto 1fr; }
       .project-meta { flex-direction: row; align-items: center; }
@@ -299,10 +351,20 @@
     <a href="#formation">Formation</a>
     <a href="#contact">Contact</a>
   </div>
+  <button class="theme-btn" onclick="toggleTheme()" title="Changer le thème">
+    <span id="theme-icon">🔦</span>
+  </button>
 </nav>
 
+<script>
+  function toggleTheme() {
+    document.body.classList.toggle('light');
+    const icon = document.getElementById('theme-icon');
+    icon.textContent = document.body.classList.contains('light') ? '🌙' : '🔦';
+  }
+</script>
+
 <div class="hero">
-  <p class="hero-tag">// disponible pour une alternance ou un stage</p>
   <h1>Ayman<br/><span>LATOUATE</span></h1>
   <p>Technicien informatique passionné par les réseaux, le support et les infrastructures IT. Basé en Île-de-France.</p>
   <div class="hero-cta">
