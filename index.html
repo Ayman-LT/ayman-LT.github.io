@@ -360,38 +360,379 @@
     <a href="#formation">Formation</a>
     <a href="#contact">Contact</a>
   </div>
-  <button class="theme-btn" onclick="toggleTheme()" title="Changer le thème">
-    <span id="theme-icon">🔦</span>
-  </button>
+  <div style="display:flex;align-items:center;gap:.6rem;">
+    <div style="position:relative;">
+      <button class="theme-btn" onclick="toggleLang()" id="lang-btn" title="Changer la langue" style="gap:.3rem;font-family:var(--mono);font-size:.78rem;">
+        <span id="lang-flag">🇫🇷</span> <span id="lang-label">FR</span>
+      </button>
+      <div id="lang-menu" style="display:none;position:absolute;right:0;top:calc(100% + .4rem);background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden;z-index:200;min-width:110px;">
+        <button onclick="setLang('fr')" style="display:flex;align-items:center;gap:.5rem;width:100%;padding:.5rem .8rem;background:none;border:none;color:var(--text);font-size:.82rem;cursor:pointer;font-family:var(--sans);">🇫🇷 Français</button>
+        <button onclick="setLang('en')" style="display:flex;align-items:center;gap:.5rem;width:100%;padding:.5rem .8rem;background:none;border:none;color:var(--text);font-size:.82rem;cursor:pointer;font-family:var(--sans);">🇬🇧 English</button>
+        <button onclick="setLang('de')" style="display:flex;align-items:center;gap:.5rem;width:100%;padding:.5rem .8rem;background:none;border:none;color:var(--text);font-size:.82rem;cursor:pointer;font-family:var(--sans);">🇩🇪 Deutsch</button>
+        <button onclick="setLang('es')" style="display:flex;align-items:center;gap:.5rem;width:100%;padding:.5rem .8rem;background:none;border:none;color:var(--text);font-size:.82rem;cursor:pointer;font-family:var(--sans);">🇪🇸 Español</button>
+      </div>
+    </div>
+    <button class="theme-btn" onclick="toggleTheme()" title="Changer le thème">
+      <span id="theme-icon">🔦</span>
+    </button>
+  </div>
 </nav>
 
 <script>
+  // ── THEME ──
   function toggleTheme() {
     document.body.classList.toggle('light');
-    const icon = document.getElementById('theme-icon');
-    icon.textContent = document.body.classList.contains('light') ? '🌙' : '🔦';
+    document.getElementById('theme-icon').textContent =
+      document.body.classList.contains('light') ? '🌙' : '🔦';
+  }
+
+  // ── LANG MENU ──
+  function toggleLang() {
+    const m = document.getElementById('lang-menu');
+    m.style.display = m.style.display === 'none' ? 'block' : 'none';
+  }
+  document.addEventListener('click', e => {
+    if (!e.target.closest('#lang-btn') && !e.target.closest('#lang-menu'))
+      document.getElementById('lang-menu').style.display = 'none';
+  });
+
+  // ── TRANSLATIONS ──
+  const translations = {
+    fr: {
+      nav: ['Projets','Compétences','Plateformes','Formation','Contact'],
+      hero_desc: 'Technicien informatique passionné par les réseaux, le support et les infrastructures IT. Basé en Île-de-France.',
+      hero_btn1: 'Voir mes projets', hero_btn2: 'Me contacter',
+      sec_projets: 'projets réalisés',
+      sec_competences: 'compétences techniques',
+      sec_plateformes: 'plateformes & certifications',
+      sec_formation: 'formation',
+      sec_seo: 'seo appliqué · ce portfolio comme terrain d\'entraînement',
+      sec_contact: 'contact',
+      badge_done: 'validé', badge_wip: 'en cours',
+      p1_title: 'Démarrez votre formation de Technicien Informatique',
+      p1_desc: 'Prise en main de l\'environnement de formation, découverte des outils et méthodologies du technicien informatique. Mise en place du cadre de travail professionnel.',
+      p2_title: 'Assemblez et intégrez le poste de votre client dans son réseau local',
+      p2_desc: 'Montage d\'un poste de travail complet, installation du système d\'exploitation, configuration réseau LAN et intégration dans l\'infrastructure existante d\'un client.',
+      p3_title: 'Installez et configurez le réseau d\'une PME',
+      p3_desc: 'Conception et déploiement d\'une infrastructure réseau pour une petite et moyenne entreprise : routage, switching, DHCP, DNS, et sécurité périmétrique.',
+      p4_title: 'Fournissez un support aux utilisateurs',
+      p4_desc: 'Gestion des tickets, diagnostic et résolution d\'incidents, accompagnement des utilisateurs finaux. Mise en pratique des procédures ITIL de support niveau 1 et 2.',
+      p4_progress: '65% complété',
+      formation_title: 'Technicien Informatique : OpenClassrooms',
+      formation_desc: 'Parcours certifiant RNCP niveau 4 · Formation en alternance · Île-de-France',
+      formation_pct: '75% complété',
+      stat1: 'projets validés', stat2: 'travaux pratiques', stat3: 'rooms TryHackMe', stat4: 'certifications',
+      seo1_title: 'Optimisation on-page',
+      seo1_desc: 'Structure sémantique HTML5 (balises section, nav, h1/h2), titre de page optimisé, méta-description, favicon personnalisé, attributs alt sur les icônes SVG. Temps de chargement minimal grâce à l\'absence de dépendances externes lourdes.',
+      seo2_title: 'Netlinking & ressources utilisées',
+      seo2_desc: 'Références et articles qui ont guidé la construction de ce portfolio et l\'application des bonnes pratiques SEO.',
+      seo3_title: 'Prochaines étapes SEO',
+      seo3_desc: 'Actions planifiées pour améliorer le référencement naturel de ce portfolio dans les prochaines semaines.',
+      pl1_title: 'TryHackMe : Rang [0x4] SEEKER',
+      pl1_desc: 'Entraînement pratique en cybersécurité via 14 rooms complétées. Compétences couvertes : Google Dorking, Nmap, Pentesting Fundamentals, Offensive & Defensive Security, SOC/SIEM/DFIR, HTTP, Networking, Linux, Windows, Virtualisation.',
+      pl2_title: 'Semrush Academy : Principes de SEO',
+      pl2_desc: 'Certification officielle couvrant les fondamentaux du référencement naturel : structure d\'un site, recherche de mots-clés, optimisation on-page et stratégie de contenu.',
+      pl2_cert: '↗ Voir le certificat · valide jusqu\'au 02/2027',
+      pl3_title: 'Semrush Academy : Créer un site Web pour une petite entreprise',
+      pl3_desc: 'Certification pratique sur la création et l\'optimisation d\'un site web professionnel pour PME : structure, contenu, UX et référencement local. Formateur : Wes McDowell.',
+      pl3_cert: '↗ Voir le certificat · valide jusqu\'au 06/2027',
+      pl4_title: 'ISO 27001 Foundations Course : Exemplar Global',
+      pl4_desc: 'Formation complète aux fondamentaux de la norme ISO 27001 : exigences, bonnes pratiques et mise en conformité des systèmes de management de la sécurité de l\'information (SMSI).',
+      pl5_title: 'ISO 27001 Internal Auditor Course : Exemplar Global',
+      pl5_desc: 'Formation à la conduite d\'audits internes ISO 27001 au sein d\'une organisation. Compétences en planification, réalisation et reporting d\'audit de conformité SMSI.',
+      pl5_progress: '26.61% complété',
+      pl6_title: 'Cisco Networking Academy : Getting Started with Packet Tracer',
+      pl6_desc: 'Formation et certification à Cisco Packet Tracer, le simulateur réseau de référence utilisé par les professionnels pour concevoir, configurer et dépanner des infrastructures réseau sans matériel physique.',
+      pl6_date: 'Délivré le 27 juin 2024',
+      pl7_title: 'AWS Skill Builder : Cloud Quest',
+      pl7_desc: 'Apprentissage gamifié des services AWS via des missions pratiques. Badge Cloud Practitioner obtenu, avec exploration de domaines avancés : Machine Learning, Solutions Architect, Data Analytics, Serverless, Generative AI, Networking et Security.',
+      pl8_title: 'Flowsint : Investigation OSINT & graphe de relations',
+      pl8_desc: 'Utilisation d\'un outil d\'investigation OSINT open source pour cartographier des entités (individus, organisations, usernames, numéros de téléphone, localisations) et leurs relations via un graphe interactif. Intégration d\'APIs tierces pour l\'enrichissement automatique des données.',
+      pl9_title: 'ISO 27001 Lead Auditor Course : Exemplar Global',
+      pl9_desc: 'Formation avancée pour piloter et diriger des équipes d\'audit ISO 27001. Objectif : certification Lead Auditor TPECS reconnue internationalement.',
+      pl9_progress: '1.95% complété',
+      footer: '© 2026 Ayman LATOUATE · Technicien Informatique · Île-de-France',
+      flag: '🇫🇷', label: 'FR'
+    },
+    en: {
+      nav: ['Projects','Skills','Platforms','Training','Contact'],
+      hero_desc: 'IT Technician passionate about networking, support and IT infrastructure. Based in Île-de-France.',
+      hero_btn1: 'View my projects', hero_btn2: 'Contact me',
+      sec_projets: 'completed projects',
+      sec_competences: 'technical skills',
+      sec_plateformes: 'platforms & certifications',
+      sec_formation: 'training',
+      sec_seo: 'applied seo · this portfolio as a practice ground',
+      sec_contact: 'contact',
+      badge_done: 'validated', badge_wip: 'in progress',
+      p1_title: 'Getting Started as an IT Technician',
+      p1_desc: 'Familiarisation with the training environment, discovery of tools and methodologies used by IT technicians. Establishment of a professional working framework.',
+      p2_title: 'Assemble and Integrate a Client Workstation into a Local Network',
+      p2_desc: 'Full workstation assembly, operating system installation, LAN network configuration and integration into an existing client infrastructure.',
+      p3_title: 'Install and Configure a SME Network',
+      p3_desc: 'Design and deployment of a network infrastructure for a small and medium-sized enterprise: routing, switching, DHCP, DNS, and perimeter security.',
+      p4_title: 'Provide User Support',
+      p4_desc: 'Ticket management, incident diagnosis and resolution, end-user assistance. Practical application of ITIL support procedures at levels 1 and 2.',
+      p4_progress: '65% completed',
+      formation_title: 'IT Technician : OpenClassrooms',
+      formation_desc: 'RNCP Level 4 certified pathway · Work-based learning · Île-de-France',
+      formation_pct: '75% completed',
+      stat1: 'validated projects', stat2: 'practical hours', stat3: 'TryHackMe rooms', stat4: 'certifications',
+      seo1_title: 'On-page Optimisation',
+      seo1_desc: 'Semantic HTML5 structure (section, nav, h1/h2 tags), optimised page title, meta description, custom favicon, alt attributes on SVG icons. Minimal loading time thanks to the absence of heavy external dependencies.',
+      seo2_title: 'Netlinking & Resources Used',
+      seo2_desc: 'References and articles that guided the construction of this portfolio and the application of SEO best practices.',
+      seo3_title: 'Next SEO Steps',
+      seo3_desc: 'Planned actions to improve the natural search ranking of this portfolio over the coming weeks.',
+      pl1_title: 'TryHackMe : Rank [0x4] SEEKER',
+      pl1_desc: 'Hands-on cybersecurity training through 14 completed rooms. Skills covered: Google Dorking, Nmap, Pentesting Fundamentals, Offensive & Defensive Security, SOC/SIEM/DFIR, HTTP, Networking, Linux, Windows, Virtualisation.',
+      pl2_title: 'Semrush Academy : SEO Fundamentals',
+      pl2_desc: 'Official certification covering the fundamentals of natural search engine optimisation: site structure, keyword research, on-page optimisation and content strategy.',
+      pl2_cert: '↗ View certificate · valid until 02/2027',
+      pl3_title: 'Semrush Academy : How to Build a Website for a Small Business',
+      pl3_desc: 'Practical certification on creating and optimising a professional website for SMEs: structure, content, UX and local SEO. Instructor: Wes McDowell.',
+      pl3_cert: '↗ View certificate · valid until 06/2027',
+      pl4_title: 'ISO 27001 Foundations Course : Exemplar Global',
+      pl4_desc: 'Comprehensive training on the fundamentals of ISO 27001: requirements, best practices and compliance of Information Security Management Systems (ISMS).',
+      pl5_title: 'ISO 27001 Internal Auditor Course : Exemplar Global',
+      pl5_desc: 'Training in conducting internal ISO 27001 audits within an organisation. Skills in planning, conducting and reporting ISMS compliance audits.',
+      pl5_progress: '26.61% completed',
+      pl6_title: 'Cisco Networking Academy : Getting Started with Packet Tracer',
+      pl6_desc: 'Training and certification in Cisco Packet Tracer, the industry-standard network simulator used by professionals to design, configure and troubleshoot network infrastructures without physical hardware.',
+      pl6_date: 'Issued on 27 June 2024',
+      pl7_title: 'AWS Skill Builder : Cloud Quest',
+      pl7_desc: 'Gamified learning of AWS services through practical missions. Cloud Practitioner badge obtained, with exploration of advanced domains: Machine Learning, Solutions Architect, Data Analytics, Serverless, Generative AI, Networking and Security.',
+      pl8_title: 'Flowsint : OSINT Investigation & Relationship Graph',
+      pl8_desc: 'Use of an open source OSINT investigation tool to map entities (individuals, organisations, usernames, phone numbers, locations) and their relationships via an interactive graph. Integration of third-party APIs for automated data enrichment.',
+      pl9_title: 'ISO 27001 Lead Auditor Course : Exemplar Global',
+      pl9_desc: 'Advanced training to lead and manage ISO 27001 audit teams. Objective: internationally recognised TPECS Lead Auditor certification.',
+      pl9_progress: '1.95% completed',
+      footer: '© 2026 Ayman LATOUATE · IT Technician · Île-de-France',
+      flag: '🇬🇧', label: 'EN'
+    },
+    de: {
+      nav: ['Projekte','Kenntnisse','Plattformen','Ausbildung','Kontakt'],
+      hero_desc: 'IT-Techniker mit Leidenschaft für Netzwerke, Support und IT-Infrastrukturen. Wohnhaft in der Île-de-France.',
+      hero_btn1: 'Meine Projekte ansehen', hero_btn2: 'Kontakt aufnehmen',
+      sec_projets: 'abgeschlossene projekte',
+      sec_competences: 'technische kenntnisse',
+      sec_plateformes: 'plattformen & zertifizierungen',
+      sec_formation: 'ausbildung',
+      sec_seo: 'angewandtes seo · dieses portfolio als übungsfeld',
+      sec_contact: 'kontakt',
+      badge_done: 'abgeschlossen', badge_wip: 'laufend',
+      p1_title: 'Einstieg in die IT-Techniker-Ausbildung',
+      p1_desc: 'Einarbeitung in die Ausbildungsumgebung, Kennenlernen der Werkzeuge und Methoden eines IT-Technikers. Aufbau eines professionellen Arbeitsrahmens.',
+      p2_title: 'Arbeitsplatz eines Kunden zusammenstellen und in ein lokales Netzwerk integrieren',
+      p2_desc: 'Vollständige Montage eines Arbeitsplatzes, Installation des Betriebssystems, LAN-Netzwerkkonfiguration und Integration in eine bestehende Kundeninfrastruktur.',
+      p3_title: 'Netzwerk eines KMU installieren und konfigurieren',
+      p3_desc: 'Konzeption und Einsatz einer Netzwerkinfrastruktur für ein kleines und mittleres Unternehmen: Routing, Switching, DHCP, DNS und Perimetersicherheit.',
+      p4_title: 'Benutzersupport leisten',
+      p4_desc: 'Ticket-Verwaltung, Diagnose und Lösung von Vorfällen, Begleitung der Endnutzer. Praktische Anwendung der ITIL-Supportverfahren auf den Ebenen 1 und 2.',
+      p4_progress: '65% abgeschlossen',
+      formation_title: 'IT-Techniker : OpenClassrooms',
+      formation_desc: 'RNCP-Niveau-4-Zertifizierung · Duale Ausbildung · Île-de-France',
+      formation_pct: '75% abgeschlossen',
+      stat1: 'abgeschlossene Projekte', stat2: 'Praxisstunden', stat3: 'TryHackMe-Räume', stat4: 'Zertifizierungen',
+      seo1_title: 'On-Page-Optimierung',
+      seo1_desc: 'Semantische HTML5-Struktur (section, nav, h1/h2-Tags), optimierter Seitentitel, Meta-Beschreibung, benutzerdefiniertes Favicon, Alt-Attribute für SVG-Symbole. Minimale Ladezeit dank des Verzichts auf schwere externe Abhängigkeiten.',
+      seo2_title: 'Verlinkung & verwendete Ressourcen',
+      seo2_desc: 'Referenzen und Artikel, die den Aufbau dieses Portfolios und die Anwendung von SEO-Best-Practices geleitet haben.',
+      seo3_title: 'Nächste SEO-Schritte',
+      seo3_desc: 'Geplante Maßnahmen zur Verbesserung der natürlichen Suchmaschinenplatzierung dieses Portfolios in den nächsten Wochen.',
+      pl1_title: 'TryHackMe : Rang [0x4] SEEKER',
+      pl1_desc: 'Praktisches Cybersicherheitstraining durch 14 abgeschlossene Räume. Abgedeckte Kenntnisse: Google Dorking, Nmap, Pentesting-Grundlagen, Offensive & Defensive Security, SOC/SIEM/DFIR, HTTP, Networking, Linux, Windows, Virtualisierung.',
+      pl2_title: 'Semrush Academy : SEO-Grundlagen',
+      pl2_desc: 'Offizielle Zertifizierung zu den Grundlagen der natürlichen Suchmaschinenoptimierung: Website-Struktur, Keyword-Recherche, On-Page-Optimierung und Content-Strategie.',
+      pl2_cert: '↗ Zertifikat ansehen · gültig bis 02/2027',
+      pl3_title: 'Semrush Academy : Website für ein kleines Unternehmen erstellen',
+      pl3_desc: 'Praktische Zertifizierung zur Erstellung und Optimierung einer professionellen Website für KMU: Struktur, Inhalt, UX und lokales SEO. Dozent: Wes McDowell.',
+      pl3_cert: '↗ Zertifikat ansehen · gültig bis 06/2027',
+      pl4_title: 'ISO 27001 Foundations Course : Exemplar Global',
+      pl4_desc: 'Umfassende Schulung zu den Grundlagen der ISO 27001: Anforderungen, Best Practices und Konformität von Informationssicherheitsmanagementsystemen (ISMS).',
+      pl5_title: 'ISO 27001 Internal Auditor Course : Exemplar Global',
+      pl5_desc: 'Schulung zur Durchführung interner ISO 27001-Audits in einer Organisation. Kenntnisse in Planung, Durchführung und Berichterstattung von ISMS-Konformitätsaudits.',
+      pl5_progress: '26,61% abgeschlossen',
+      pl6_title: 'Cisco Networking Academy : Erste Schritte mit Packet Tracer',
+      pl6_desc: 'Schulung und Zertifizierung in Cisco Packet Tracer, dem branchenführenden Netzwerksimulator, der von Fachleuten verwendet wird, um Netzwerkinfrastrukturen ohne physische Hardware zu entwerfen, zu konfigurieren und zu troubleshooten.',
+      pl6_date: 'Ausgestellt am 27. Juni 2024',
+      pl7_title: 'AWS Skill Builder : Cloud Quest',
+      pl7_desc: 'Spielerisches Erlernen von AWS-Diensten durch praktische Missionen. Cloud Practitioner-Abzeichen erhalten, mit Erkundung fortgeschrittener Bereiche: Machine Learning, Solutions Architect, Data Analytics, Serverless, Generative AI, Networking und Security.',
+      pl8_title: 'Flowsint : OSINT-Ermittlung & Beziehungsgraph',
+      pl8_desc: 'Verwendung eines Open-Source-OSINT-Ermittlungstools zur Kartierung von Entitäten (Einzelpersonen, Organisationen, Benutzernamen, Telefonnummern, Standorte) und deren Beziehungen über einen interaktiven Graphen. Integration von Drittanbieter-APIs zur automatischen Datenanreicherung.',
+      pl9_title: 'ISO 27001 Lead Auditor Course : Exemplar Global',
+      pl9_desc: 'Fortgeschrittene Schulung zur Leitung und Verwaltung von ISO 27001-Auditteams. Ziel: international anerkannte TPECS Lead Auditor-Zertifizierung.',
+      pl9_progress: '1,95% abgeschlossen',
+      footer: '© 2026 Ayman LATOUATE · IT-Techniker · Île-de-France',
+      flag: '🇩🇪', label: 'DE'
+    },
+    es: {
+      nav: ['Proyectos','Competencias','Plataformas','Formación','Contacto'],
+      hero_desc: 'Técnico informático apasionado por las redes, el soporte y las infraestructuras IT. Ubicado en Île-de-France.',
+      hero_btn1: 'Ver mis proyectos', hero_btn2: 'Contactarme',
+      sec_projets: 'proyectos realizados',
+      sec_competences: 'competencias técnicas',
+      sec_plateformes: 'plataformas & certificaciones',
+      sec_formation: 'formación',
+      sec_seo: 'seo aplicado · este portfolio como campo de entrenamiento',
+      sec_contact: 'contacto',
+      badge_done: 'validado', badge_wip: 'en curso',
+      p1_title: 'Inicio de la formación como Técnico Informático',
+      p1_desc: 'Familiarización con el entorno de formación, descubrimiento de las herramientas y metodologías del técnico informático. Establecimiento del marco de trabajo profesional.',
+      p2_title: 'Montar e integrar el equipo del cliente en su red local',
+      p2_desc: 'Montaje completo de un puesto de trabajo, instalación del sistema operativo, configuración de red LAN e integración en la infraestructura existente de un cliente.',
+      p3_title: 'Instalar y configurar la red de una PYME',
+      p3_desc: 'Diseño y despliegue de una infraestructura de red para una pequeña y mediana empresa: enrutamiento, switching, DHCP, DNS y seguridad perimetral.',
+      p4_title: 'Proporcionar soporte a los usuarios',
+      p4_desc: 'Gestión de tickets, diagnóstico y resolución de incidencias, acompañamiento de los usuarios finales. Aplicación práctica de los procedimientos de soporte ITIL en los niveles 1 y 2.',
+      p4_progress: '65% completado',
+      formation_title: 'Técnico Informático : OpenClassrooms',
+      formation_desc: 'Itinerario certificado RNCP nivel 4 · Formación en alternancia · Île-de-France',
+      formation_pct: '75% completado',
+      stat1: 'proyectos validados', stat2: 'horas prácticas', stat3: 'salas TryHackMe', stat4: 'certificaciones',
+      seo1_title: 'Optimización on-page',
+      seo1_desc: 'Estructura semántica HTML5 (etiquetas section, nav, h1/h2), título de página optimizado, meta descripción, favicon personalizado, atributos alt en los iconos SVG. Tiempo de carga mínimo gracias a la ausencia de dependencias externas pesadas.',
+      seo2_title: 'Netlinking & recursos utilizados',
+      seo2_desc: 'Referencias y artículos que han guiado la construcción de este portfolio y la aplicación de las buenas prácticas SEO.',
+      seo3_title: 'Próximos pasos SEO',
+      seo3_desc: 'Acciones planificadas para mejorar el posicionamiento orgánico de este portfolio en las próximas semanas.',
+      pl1_title: 'TryHackMe : Rango [0x4] SEEKER',
+      pl1_desc: 'Entrenamiento práctico en ciberseguridad a través de 14 salas completadas. Competencias adquiridas: Google Dorking, Nmap, Fundamentos de Pentesting, Seguridad Ofensiva y Defensiva, SOC/SIEM/DFIR, HTTP, Networking, Linux, Windows, Virtualización.',
+      pl2_title: 'Semrush Academy : Principios de SEO',
+      pl2_desc: 'Certificación oficial que cubre los fundamentos del posicionamiento orgánico: estructura del sitio, investigación de palabras clave, optimización on-page y estrategia de contenidos.',
+      pl2_cert: '↗ Ver certificado · válido hasta 02/2027',
+      pl3_title: 'Semrush Academy : Cómo crear un sitio web para una pequeña empresa',
+      pl3_desc: 'Certificación práctica sobre la creación y optimización de un sitio web profesional para PYMES: estructura, contenido, UX y SEO local. Instructor: Wes McDowell.',
+      pl3_cert: '↗ Ver certificado · válido hasta 06/2027',
+      pl4_title: 'ISO 27001 Foundations Course : Exemplar Global',
+      pl4_desc: 'Formación completa sobre los fundamentos de la norma ISO 27001: requisitos, buenas prácticas y cumplimiento de los Sistemas de Gestión de Seguridad de la Información (SGSI).',
+      pl5_title: 'ISO 27001 Internal Auditor Course : Exemplar Global',
+      pl5_desc: 'Formación para la realización de auditorías internas ISO 27001 en una organización. Competencias en planificación, ejecución e informes de auditorías de conformidad del SGSI.',
+      pl5_progress: '26,61% completado',
+      pl6_title: 'Cisco Networking Academy : Introducción a Packet Tracer',
+      pl6_desc: 'Formación y certificación en Cisco Packet Tracer, el simulador de redes de referencia utilizado por los profesionales para diseñar, configurar y solucionar problemas de infraestructuras de red sin hardware físico.',
+      pl6_date: 'Emitido el 27 de junio de 2024',
+      pl7_title: 'AWS Skill Builder : Cloud Quest',
+      pl7_desc: 'Aprendizaje gamificado de los servicios de AWS a través de misiones prácticas. Insignia Cloud Practitioner obtenida, con exploración de áreas avanzadas: Machine Learning, Solutions Architect, Data Analytics, Serverless, Generative AI, Networking y Security.',
+      pl8_title: 'Flowsint : Investigación OSINT & grafo de relaciones',
+      pl8_desc: 'Uso de una herramienta de investigación OSINT de código abierto para cartografiar entidades (individuos, organizaciones, nombres de usuario, números de teléfono, localizaciones) y sus relaciones mediante un grafo interactivo. Integración de APIs de terceros para el enriquecimiento automático de datos.',
+      pl9_title: 'ISO 27001 Lead Auditor Course : Exemplar Global',
+      pl9_desc: 'Formación avanzada para liderar y gestionar equipos de auditoría ISO 27001. Objetivo: certificación Lead Auditor TPECS reconocida internacionalmente.',
+      pl9_progress: '1,95% completado',
+      footer: '© 2026 Ayman LATOUATE · Técnico Informático · Île-de-France',
+      flag: '🇪🇸', label: 'ES'
+    }
+  };
+
+  let currentLang = 'fr';
+
+  function setLang(lang) {
+    currentLang = lang;
+    const t = translations[lang];
+    document.getElementById('lang-flag').textContent = t.flag;
+    document.getElementById('lang-label').textContent = t.label;
+    document.getElementById('lang-menu').style.display = 'none';
+
+    // Nav links
+    const navLinks = document.querySelectorAll('.nav-links a');
+    t.nav.forEach((txt, i) => { if(navLinks[i]) navLinks[i].textContent = txt; });
+
+    // Hero
+    document.getElementById('hero-desc').textContent = t.hero_desc;
+    document.getElementById('hero-btn1').textContent = t.hero_btn1;
+    document.getElementById('hero-btn2').textContent = t.hero_btn2;
+
+    // Section heads
+    document.getElementById('sh-projets').textContent = t.sec_projets;
+    document.getElementById('sh-competences').textContent = t.sec_competences;
+    document.getElementById('sh-plateformes').textContent = t.sec_plateformes;
+    document.getElementById('sh-formation').textContent = t.sec_formation;
+    document.getElementById('sh-seo').textContent = t.sec_seo;
+    document.getElementById('sh-contact').textContent = t.sec_contact;
+
+    // Badges
+    document.querySelectorAll('.badge-done').forEach(b => b.textContent = t.badge_done);
+    document.querySelectorAll('.badge-wip').forEach(b => b.textContent = t.badge_wip);
+
+    // Projects
+    document.getElementById('p1-title').textContent = t.p1_title;
+    document.getElementById('p1-desc').textContent = t.p1_desc;
+    document.getElementById('p2-title').textContent = t.p2_title;
+    document.getElementById('p2-desc').textContent = t.p2_desc;
+    document.getElementById('p3-title').textContent = t.p3_title;
+    document.getElementById('p3-desc').textContent = t.p3_desc;
+    document.getElementById('p4-title').textContent = t.p4_title;
+    document.getElementById('p4-desc').textContent = t.p4_desc;
+    document.getElementById('p4-progress').textContent = t.p4_progress;
+
+    // Formation
+    document.getElementById('formation-title').textContent = t.formation_title;
+    document.getElementById('formation-desc').textContent = t.formation_desc;
+    document.getElementById('formation-pct').textContent = t.formation_pct;
+    document.getElementById('stat1').textContent = t.stat1;
+    document.getElementById('stat2').textContent = t.stat2;
+    document.getElementById('stat3').textContent = t.stat3;
+    document.getElementById('stat4').textContent = t.stat4;
+
+    // SEO
+    document.getElementById('seo1-title').textContent = t.seo1_title;
+    document.getElementById('seo1-desc').textContent = t.seo1_desc;
+    document.getElementById('seo2-title').textContent = t.seo2_title;
+    document.getElementById('seo2-desc').textContent = t.seo2_desc;
+    document.getElementById('seo3-title').textContent = t.seo3_title;
+    document.getElementById('seo3-desc').textContent = t.seo3_desc;
+
+    // Plateformes
+    document.getElementById('pl1-title').textContent = t.pl1_title;
+    document.getElementById('pl1-desc').textContent = t.pl1_desc;
+    document.getElementById('pl2-title').textContent = t.pl2_title;
+    document.getElementById('pl2-desc').textContent = t.pl2_desc;
+    document.getElementById('pl2-cert').textContent = t.pl2_cert;
+    document.getElementById('pl3-title').textContent = t.pl3_title;
+    document.getElementById('pl3-desc').textContent = t.pl3_desc;
+    document.getElementById('pl3-cert').textContent = t.pl3_cert;
+    document.getElementById('pl4-title').textContent = t.pl4_title;
+    document.getElementById('pl4-desc').textContent = t.pl4_desc;
+    document.getElementById('pl5-title').textContent = t.pl5_title;
+    document.getElementById('pl5-desc').textContent = t.pl5_desc;
+    document.getElementById('pl5-progress').textContent = t.pl5_progress;
+    document.getElementById('pl6-title').textContent = t.pl6_title;
+    document.getElementById('pl6-desc').textContent = t.pl6_desc;
+    document.getElementById('pl6-date').textContent = t.pl6_date;
+    document.getElementById('pl7-title').textContent = t.pl7_title;
+    document.getElementById('pl7-desc').textContent = t.pl7_desc;
+    document.getElementById('pl8-title').textContent = t.pl8_title;
+    document.getElementById('pl8-desc').textContent = t.pl8_desc;
+    document.getElementById('pl9-title').textContent = t.pl9_title;
+    document.getElementById('pl9-desc').textContent = t.pl9_desc;
+    document.getElementById('pl9-progress').textContent = t.pl9_progress;
+
+    // Footer
+    document.getElementById('footer').textContent = t.footer;
+
+    document.documentElement.lang = lang;
   }
 </script>
 
 <div class="hero">
   <h1>Ayman<br/><span>LATOUATE</span></h1>
-  <p>Technicien informatique passionné par les réseaux, le support et les infrastructures IT. Basé en Île-de-France.</p>
+  <p id="hero-desc">Technicien informatique passionné par les réseaux, le support et les infrastructures IT. Basé en Île-de-France.</p>
   <div class="hero-cta">
-    <a href="#projets" class="btn btn-primary">Voir mes projets</a>
-    <a href="#contact" class="btn btn-outline">Me contacter</a>
+    <a href="#projets" id="hero-btn1" class="btn btn-primary">Voir mes projets</a>
+    <a href="#contact" id="hero-btn2" class="btn btn-outline">Me contacter</a>
   </div>
 </div>
 
 
 <section id="projets">
-  <p class="section-head">projets réalisés</p>
+  <p id="sh-projets" class="section-head">projets réalisés</p>
   <div class="projects">
 
     <div class="project-card">
       <span class="project-index">01</span>
       <div class="project-body">
-        <h3>Démarrez votre formation de Technicien Informatique</h3>
-        <p>Prise en main de l'environnement de formation, découverte des outils et méthodologies du technicien informatique. Mise en place du cadre de travail professionnel.</p>
+        <h3 id="p1-title">Démarrez votre formation de Technicien Informatique</h3>
+        <p id="p1-desc">Prise en main de l'environnement de formation, découverte des outils et méthodologies du technicien informatique. Mise en place du cadre de travail professionnel.</p>
       </div>
       <div class="project-meta">
         <span class="badge badge-done">validé</span>
@@ -402,8 +743,8 @@
     <div class="project-card">
       <span class="project-index">02</span>
       <div class="project-body">
-        <h3>Assemblez et intégrez le poste de votre client dans son réseau local</h3>
-        <p>Montage d'un poste de travail complet, installation du système d'exploitation, configuration réseau LAN et intégration dans l'infrastructure existante d'un client.</p>
+        <h3 id="p2-title">Assemblez et intégrez le poste de votre client dans son réseau local</h3>
+        <p id="p2-desc">Montage d'un poste de travail complet, installation du système d'exploitation, configuration réseau LAN et intégration dans l'infrastructure existante d'un client.</p>
       </div>
       <div class="project-meta">
         <span class="badge badge-done">validé</span>
@@ -414,8 +755,8 @@
     <div class="project-card">
       <span class="project-index">03</span>
       <div class="project-body">
-        <h3>Installez et configurez le réseau d'une PME</h3>
-        <p>Conception et déploiement d'une infrastructure réseau pour une petite et moyenne entreprise : routage, switching, DHCP, DNS, et sécurité périmétrique.</p>
+        <h3 id="p3-title">Installez et configurez le réseau d'une PME</h3>
+        <p id="p3-desc">Conception et déploiement d'une infrastructure réseau pour une petite et moyenne entreprise : routage, switching, DHCP, DNS, et sécurité périmétrique.</p>
       </div>
       <div class="project-meta">
         <span class="badge badge-done">validé</span>
@@ -426,10 +767,10 @@
     <div class="project-card">
       <span class="project-index">04</span>
       <div class="project-body">
-        <h3>Fournissez un support aux utilisateurs</h3>
-        <p>Gestion des tickets, diagnostic et résolution d'incidents, accompagnement des utilisateurs finaux. Mise en pratique des procédures ITIL de support niveau 1 et 2.</p>
+        <h3 id="p4-title">Fournissez un support aux utilisateurs</h3>
+        <p id="p4-desc">Gestion des tickets, diagnostic et résolution d'incidents, accompagnement des utilisateurs finaux. Mise en pratique des procédures ITIL de support niveau 1 et 2.</p>
         <div class="progress-wrap">
-          <p class="progress-label">65% complété</p>
+          <p id="p4-progress" class="progress-label">65% complété</p>
           <div class="progress-bar">
             <div class="progress-fill" style="width:65%"></div>
           </div>
@@ -445,7 +786,7 @@
 </section>
 
 <section id="competences">
-  <p class="section-head">compétences techniques</p>
+  <p id="sh-competences" class="section-head">compétences techniques</p>
   <div class="skills-grid">
     <div class="skill-item">
       <p class="skill-name">Réseaux TCP/IP</p>
@@ -523,7 +864,7 @@
 </section>
 
 <section id="plateformes">
-  <p class="section-head">plateformes & certifications</p>
+  <p id="sh-plateformes" class="section-head">plateformes & certifications</p>
   <div class="projects">
 
     <div class="project-card">
@@ -531,8 +872,8 @@
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#58A6FF" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
       </span>
       <div class="project-body">
-        <h3>TryHackMe : Rang [0x4] SEEKER</h3>
-        <p>Entraînement pratique en cybersécurité via 14 rooms complétées. Compétences couvertes : Google Dorking, Nmap, Pentesting Fundamentals, Offensive & Defensive Security, SOC/SIEM/DFIR, HTTP, Networking, Linux, Windows, Virtualisation.</p>
+        <h3 id="pl1-title">TryHackMe : Rang [0x4] SEEKER</h3>
+        <p id="pl1-desc">Entraînement pratique en cybersécurité via 14 rooms complétées. Compétences couvertes : Google Dorking, Nmap, Pentesting Fundamentals, Offensive & Defensive Security, SOC/SIEM/DFIR, HTTP, Networking, Linux, Windows, Virtualisation.</p>
         <div style="display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.7rem;">
           <span style="font-family:var(--mono);font-size:.68rem;padding:.15rem .5rem;border-radius:12px;background:rgba(255,100,100,.1);color:#ff6b6b;border:1px solid rgba(255,100,100,.25);">Google Dorking</span>
           <span style="font-family:var(--mono);font-size:.68rem;padding:.15rem .5rem;border-radius:12px;background:rgba(255,100,100,.1);color:#ff6b6b;border:1px solid rgba(255,100,100,.25);">Nmap</span>
@@ -559,11 +900,11 @@
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3FB950" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
       </span>
       <div class="project-body">
-        <h3>Semrush Academy : Principes de SEO</h3>
-        <p>Certification officielle couvrant les fondamentaux du référencement naturel : structure d'un site, recherche de mots-clés, optimisation on-page et stratégie de contenu.</p>
+        <h3 id="pl2-title">Semrush Academy : Principes de SEO</h3>
+        <p id="pl2-desc">Certification officielle couvrant les fondamentaux du référencement naturel : structure d'un site, recherche de mots-clés, optimisation on-page et stratégie de contenu.</p>
         <div class="progress-wrap" style="margin-top:.6rem">
           <a href="https://static.semrush.com/academy/certificates/242f53dcd4/latouate-ayman_10.pdf" target="_blank" style="font-family:var(--mono);font-size:.7rem;color:var(--accent);text-decoration:none;">
-            ↗ Voir le certificat · valide jusqu'au 02/2027
+            <span id="pl2-cert">↗ Voir le certificat · valide jusqu'au 02/2027</span>
           </a>
         </div>
       </div>
@@ -578,11 +919,11 @@
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3FB950" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
       </span>
       <div class="project-body">
-        <h3>Semrush Academy : Créer un site Web pour une petite entreprise</h3>
-        <p>Certification pratique sur la création et l'optimisation d'un site web professionnel pour PME : structure, contenu, UX et référencement local. Formateur : Wes McDowell.</p>
+        <h3 id="pl3-title">Semrush Academy : Créer un site Web pour une petite entreprise</h3>
+        <p id="pl3-desc">Certification pratique sur la création et l'optimisation d'un site web professionnel pour PME : structure, contenu, UX et référencement local. Formateur : Wes McDowell.</p>
         <div class="progress-wrap" style="margin-top:.6rem">
           <a href="https://static.semrush.com/academy/certificates/ec56206dcb/latouate-ayman_4.pdf" target="_blank" style="font-family:var(--mono);font-size:.7rem;color:var(--accent);text-decoration:none;">
-            ↗ Voir le certificat · valide jusqu'au 06/2027
+            <span id="pl3-cert">↗ Voir le certificat · valide jusqu'au 06/2027</span>
           </a>
         </div>
       </div>
@@ -597,8 +938,8 @@
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3FB950" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
       </span>
       <div class="project-body">
-        <h3>ISO 27001 Foundations Course : Exemplar Global</h3>
-        <p>Formation complète aux fondamentaux de la norme ISO 27001 : exigences, bonnes pratiques et mise en conformité des systèmes de management de la sécurité de l'information (SMSI).</p>
+        <h3 id="pl4-title">ISO 27001 Foundations Course : Exemplar Global</h3>
+        <p id="pl4-desc">Formation complète aux fondamentaux de la norme ISO 27001 : exigences, bonnes pratiques et mise en conformité des systèmes de management de la sécurité de l'information (SMSI).</p>
       </div>
       <div class="project-meta">
         <span class="badge badge-done">100% complété</span>
@@ -611,10 +952,10 @@
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#58A6FF" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
       </span>
       <div class="project-body">
-        <h3>ISO 27001 Internal Auditor Course : Exemplar Global</h3>
-        <p>Formation à la conduite d'audits internes ISO 27001 au sein d'une organisation. Compétences en planification, réalisation et reporting d'audit de conformité SMSI.</p>
+        <h3 id="pl5-title">ISO 27001 Internal Auditor Course : Exemplar Global</h3>
+        <p id="pl5-desc">Formation à la conduite d'audits internes ISO 27001 au sein d'une organisation. Compétences en planification, réalisation et reporting d'audit de conformité SMSI.</p>
         <div class="progress-wrap">
-          <p class="progress-label">26.61% complété</p>
+          <p id="pl5-progress" class="progress-label">26.61% complété</p>
           <div class="progress-bar">
             <div class="progress-fill" style="width:26.61%"></div>
           </div>
@@ -631,14 +972,14 @@
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1BA0D7" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
       </span>
       <div class="project-body">
-        <h3>Cisco Networking Academy : Getting Started with Packet Tracer</h3>
-        <p>Formation et certification à Cisco Packet Tracer, le simulateur réseau de référence utilisé par les professionnels pour concevoir, configurer et dépanner des infrastructures réseau sans matériel physique.</p>
+        <h3 id="pl6-title">Cisco Networking Academy : Getting Started with Packet Tracer</h3>
+        <p id="pl6-desc">Formation et certification à Cisco Packet Tracer, le simulateur réseau de référence utilisé par les professionnels pour concevoir, configurer et dépanner des infrastructures réseau sans matériel physique.</p>
         <div style="display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.7rem;">
           <span style="font-family:var(--mono);font-size:.68rem;padding:.15rem .5rem;border-radius:12px;background:rgba(27,160,215,.1);color:#1BA0D7;border:1px solid rgba(27,160,215,.25);">Packet Tracer</span>
           <span style="font-family:var(--mono);font-size:.68rem;padding:.15rem .5rem;border-radius:12px;background:rgba(27,160,215,.1);color:#1BA0D7;border:1px solid rgba(27,160,215,.25);">Simulation réseau</span>
           <span style="font-family:var(--mono);font-size:.68rem;padding:.15rem .5rem;border-radius:12px;background:rgba(27,160,215,.1);color:#1BA0D7;border:1px solid rgba(27,160,215,.25);">Cisco</span>
         </div>
-        <p style="font-family:var(--mono);font-size:.7rem;color:var(--muted);margin-top:.6rem;">Délivré le 27 juin 2024</p>
+        <p id="pl6-date" style="font-family:var(--mono);font-size:.7rem;color:var(--muted);margin-top:.6rem;">Délivré le 27 juin 2024</p>
       </div>
       <div class="project-meta">
         <span class="badge badge-done">certifié</span>
@@ -651,8 +992,8 @@
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FF9900" stroke-width="2"><path d="M3 15a4 4 0 0 0 4 4h9a5 5 0 1 0-.1-9.999 5.002 5.002 0 0 0-9.78 2.096A4.001 4.001 0 0 0 3 15z"/></svg>
       </span>
       <div class="project-body">
-        <h3>AWS Skill Builder : Cloud Quest</h3>
-        <p>Apprentissage gamifié des services AWS via des missions pratiques. Badge Cloud Practitioner obtenu, avec exploration de domaines avancés : Machine Learning, Solutions Architect, Data Analytics, Serverless, Generative AI, Networking et Security.</p>
+        <h3 id="pl7-title">AWS Skill Builder : Cloud Quest</h3>
+        <p id="pl7-desc">Apprentissage gamifié des services AWS via des missions pratiques. Badge Cloud Practitioner obtenu, avec exploration de domaines avancés : Machine Learning, Solutions Architect, Data Analytics, Serverless, Generative AI, Networking et Security.</p>
         <div style="display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.7rem;">
           <span style="font-family:var(--mono);font-size:.68rem;padding:.15rem .5rem;border-radius:12px;background:rgba(255,153,0,.1);color:#FF9900;border:1px solid rgba(255,153,0,.25);">Cloud Practitioner ✓</span>
           <span style="font-family:var(--mono);font-size:.68rem;padding:.15rem .5rem;border-radius:12px;background:rgba(255,153,0,.08);color:#FF9900;border:1px solid rgba(255,153,0,.2);">Machine Learning</span>
@@ -674,8 +1015,8 @@
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg>
       </span>
       <div class="project-body">
-        <h3>Flowsint : Investigation OSINT & graphe de relations</h3>
-        <p>Utilisation d'un outil d'investigation OSINT open source pour cartographier des entités (individus, organisations, usernames, numéros de téléphone, localisations) et leurs relations via un graphe interactif. Intégration d'APIs tierces pour l'enrichissement automatique des données.</p>
+        <h3 id="pl8-title">Flowsint : Investigation OSINT & graphe de relations</h3>
+        <p id="pl8-desc">Utilisation d'un outil d'investigation OSINT open source pour cartographier des entités (individus, organisations, usernames, numéros de téléphone, localisations) et leurs relations via un graphe interactif. Intégration d'APIs tierces pour l'enrichissement automatique des données.</p>
         <div style="display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.7rem;">
           <span style="font-family:var(--mono);font-size:.68rem;padding:.15rem .5rem;border-radius:12px;background:rgba(167,139,250,.1);color:#a78bfa;border:1px solid rgba(167,139,250,.25);">Shodan</span>
           <span style="font-family:var(--mono);font-size:.68rem;padding:.15rem .5rem;border-radius:12px;background:rgba(167,139,250,.1);color:#a78bfa;border:1px solid rgba(167,139,250,.25);">Sherlock</span>
@@ -696,10 +1037,10 @@
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#58A6FF" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
       </span>
       <div class="project-body">
-        <h3>ISO 27001 Lead Auditor Course : Exemplar Global</h3>
-        <p>Formation avancée pour piloter et diriger des équipes d'audit ISO 27001. Objectif : certification Lead Auditor TPECS reconnue internationalement.</p>
+        <h3 id="pl9-title">ISO 27001 Lead Auditor Course : Exemplar Global</h3>
+        <p id="pl9-desc">Formation avancée pour piloter et diriger des équipes d'audit ISO 27001. Objectif : certification Lead Auditor TPECS reconnue internationalement.</p>
         <div class="progress-wrap">
-          <p class="progress-label">1.95% complété</p>
+          <p id="pl9-progress" class="progress-label">1.95% complété</p>
           <div class="progress-bar">
             <div class="progress-fill" style="width:1.95%"></div>
           </div>
@@ -715,39 +1056,39 @@
 </section>
 
 <section id="formation">
-  <p class="section-head">formation</p>
+  <p id="sh-formation" class="section-head">formation</p>
   <div class="formation-card">
-    <h3>Technicien Informatique : OpenClassrooms</h3>
-    <p>Parcours certifiant RNCP niveau 4 · Formation en alternance · Île-de-France</p>
+    <h3 id="formation-title">Technicien Informatique : OpenClassrooms</h3>
+    <p id="formation-desc">Parcours certifiant RNCP niveau 4 · Formation en alternance · Île-de-France</p>
     <div class="formation-progress">
       <div class="formation-bar">
         <div class="formation-fill" style="width:75%"></div>
       </div>
-      <span class="formation-pct">75% complété</span>
+      <span id="formation-pct" class="formation-pct">75% complété</span>
     </div>
     <div class="stats" style="margin:1.5rem 0 0;padding:0;border:none;gap:1.5rem;flex-wrap:wrap;">
       <div class="stat-item">
         <span class="stat-num">3</span>
-        <span class="stat-label">projets validés</span>
+        <span id="stat1" class="stat-label">projets validés</span>
       </div>
       <div class="stat-item">
         <span class="stat-num">115h</span>
-        <span class="stat-label">travaux pratiques</span>
+        <span id="stat2" class="stat-label">travaux pratiques</span>
       </div>
       <div class="stat-item">
         <span class="stat-num">14</span>
-        <span class="stat-label">rooms TryHackMe</span>
+        <span id="stat3" class="stat-label">rooms TryHackMe</span>
       </div>
       <div class="stat-item">
         <span class="stat-num">3+</span>
-        <span class="stat-label">certifications</span>
+        <span id="stat4" class="stat-label">certifications</span>
       </div>
     </div>
   </div>
 </section>
 
 <section id="seo">
-  <p class="section-head">seo appliqué · ce portfolio comme terrain d'entraînement</p>
+  <p id="sh-seo" class="section-head">seo appliqué · ce portfolio comme terrain d'entraînement</p>
   <div class="projects">
 
     <div class="project-card">
@@ -755,8 +1096,8 @@
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#58A6FF" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
       </span>
       <div class="project-body">
-        <h3>Optimisation on-page</h3>
-        <p>Structure sémantique HTML5 (balises section, nav, h1/h2), titre de page optimisé, méta-description, favicon personnalisé, attributs alt sur les icônes SVG. Temps de chargement minimal grâce à l'absence de dépendances externes lourdes.</p>
+        <h3 id="seo1-title">Optimisation on-page</h3>
+        <p id="seo1-desc">Structure sémantique HTML5 (balises section, nav, h1/h2), titre de page optimisé, méta-description, favicon personnalisé, attributs alt sur les icônes SVG. Temps de chargement minimal grâce à l'absence de dépendances externes lourdes.</p>
         <div style="display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.7rem;">
           <span style="font-family:var(--mono);font-size:.68rem;padding:.15rem .5rem;border-radius:12px;background:rgba(88,166,255,.1);color:#58A6FF;border:1px solid rgba(88,166,255,.25);">Balises sémantiques</span>
           <span style="font-family:var(--mono);font-size:.68rem;padding:.15rem .5rem;border-radius:12px;background:rgba(88,166,255,.1);color:#58A6FF;border:1px solid rgba(88,166,255,.25);">Structure H1/H2</span>
@@ -773,8 +1114,8 @@
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3FB950" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
       </span>
       <div class="project-body">
-        <h3>Netlinking & ressources utilisées</h3>
-        <p>Références et articles qui ont guidé la construction de ce portfolio et l'application des bonnes pratiques SEO.</p>
+        <h3 id="seo2-title">Netlinking & ressources utilisées</h3>
+        <p id="seo2-desc">Références et articles qui ont guidé la construction de ce portfolio et l'application des bonnes pratiques SEO.</p>
         <div style="display:flex;flex-direction:column;gap:.4rem;margin-top:.7rem;">
           <a href="https://developers.google.com/search/docs" target="_blank" style="font-family:var(--mono);font-size:.75rem;color:var(--accent);text-decoration:none;">↗ Google Search Central — Guide officiel SEO</a>
           <a href="https://backlinko.com/on-page-seo" target="_blank" style="font-family:var(--mono);font-size:.75rem;color:var(--accent);text-decoration:none;">↗ Backlinko — On-Page SEO : The Definitive Guide</a>
@@ -792,8 +1133,8 @@
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
       </span>
       <div class="project-body">
-        <h3>Prochaines étapes SEO</h3>
-        <p>Actions planifiées pour améliorer le référencement naturel de ce portfolio dans les prochaines semaines.</p>
+        <h3 id="seo3-title">Prochaines étapes SEO</h3>
+        <p id="seo3-desc">Actions planifiées pour améliorer le référencement naturel de ce portfolio dans les prochaines semaines.</p>
         <div style="display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.7rem;">
           <span style="font-family:var(--mono);font-size:.68rem;padding:.15rem .5rem;border-radius:12px;background:rgba(167,139,250,.1);color:#a78bfa;border:1px solid rgba(167,139,250,.25);">Google Search Console</span>
           <span style="font-family:var(--mono);font-size:.68rem;padding:.15rem .5rem;border-radius:12px;background:rgba(167,139,250,.1);color:#a78bfa;border:1px solid rgba(167,139,250,.25);">Sitemap XML</span>
@@ -810,7 +1151,7 @@
 </section>
 
 <section id="contact">
-  <p class="section-head">contact</p>
+  <p id="sh-contact" class="section-head">contact</p>
   <div class="contact-row">
     <a href="mailto:ayman.latouate@gmail.com" class="contact-link">
       <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
@@ -828,7 +1169,7 @@
   </div>
 </section>
 
-<footer>
+<footer id="footer">
   © 2026 Ayman LATOUATE · Technicien Informatique · Île-de-France
 </footer>
 
